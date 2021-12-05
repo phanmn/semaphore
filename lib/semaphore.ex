@@ -8,11 +8,10 @@ defmodule Semaphore do
   use GenServer
 
   def start(_type, _args) do
-    import Supervisor.Spec, warn: false
-    Supervisor.start_link([worker(__MODULE__, [])], strategy: :one_for_one)
+    Supervisor.start_link([{__MODULE__, []}], strategy: :one_for_one)
   end
 
-  def start_link() do
+  def start_link(_) do
     sweep_interval = Application.get_env(:semaphore, :sweep_interval, 5_000)
     GenServer.start_link(__MODULE__, sweep_interval, name: __MODULE__)
   end
